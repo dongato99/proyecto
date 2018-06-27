@@ -116,4 +116,22 @@ public class Vuelo {
 	public Avion obtenerAvion() {
 		return avion;
 	}
+        
+        public Boleto crearBoleto(String nombre, int asiento) {
+		if(avion.obtenerCupo()==vendidos())
+			return null;
+		if(asiento > avion.obtenerCupo() || asiento < 1)
+			return null;
+		Boleto b;
+		Asiento a = new Asiento(asiento);		
+		if(avion.asientoDisponible(asiento)) {
+			b = new Boleto(nombre);
+			b.asignarAsiento(a);
+			avion.asientos.add(a);
+		} else {
+			asiento = Integer.parseInt(javax.swing.JOptionPane.showInputDialog("El asiento ha sido escogido, escoge otro"));
+			return crearBoleto(nombre, asiento);
+		}
+		return b;
+	}
 }
