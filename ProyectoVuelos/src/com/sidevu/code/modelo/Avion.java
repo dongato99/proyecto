@@ -87,5 +87,22 @@ public class Avion {
 	public void asignarCupo(int cupo) {
 		this.cupo = cupo;
 	}
-	
+        
+	public boolean asientoDisponible(int numero) {
+		for(int i = 0; i < asientos.size(); i++)
+			if(numero==asientos.get(i).obtenerNumeroDeAsiento()) {
+				System.out.println(asientos.get(i).obtenerNumeroDeAsiento());
+				return false;
+			}
+				
+		return true;
+	}
+        
+        public List<Integer> asientosDisponibless() {
+		List<Integer> asientosDisponibles = new ArrayList<Integer>();
+		for(int i = 0; i < asientos.size(); i++)
+			if(i!=asientos.get(i).obtenerNumeroDeAsiento())
+				asientosDisponibles.add(i);
+		return asientosDisponibles;
+	}
 }
