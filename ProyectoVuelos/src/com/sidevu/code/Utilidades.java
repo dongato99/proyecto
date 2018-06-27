@@ -32,7 +32,6 @@ public class Utilidades {
     }
 
     
-    
     public static String obtenerListaDeVuelos() {
 		String lista = "";
 		for (Vuelo v : Controlador.vuelos) {
@@ -59,5 +58,4 @@ public class Utilidades {
 
 		return lista;
 	}
-
 }
