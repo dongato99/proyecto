@@ -101,8 +101,8 @@ public class Avion {
         public List<Integer> asientosDisponibless() {
 		List<Integer> asientosDisponibles = new ArrayList<Integer>();
 		for(int i = 0; i < asientos.size(); i++)
-			if(i!=asientos.get(i).obtenerNumeroDeAsiento())
-				asientosDisponibles.add(i);
+			if(asientoDisponible(i))
+                            asientosDisponibles.add(i);
 		return asientosDisponibles;
 	}
 }
