@@ -7,7 +7,8 @@ package com.sidevu.code.modelo;
 
 import java.util.List;
 import java.util.ArrayList;
-
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * 
@@ -115,5 +116,8 @@ public class Vuelo {
 	}
 	public Avion obtenerAvion() {
 		return avion;
+	}
+        public void ordenarPasajeros() {
+		Collections.sort(boletos, Comparator.comparing(Boleto::obtenerNombre));
 	}
 }
