@@ -40,6 +40,15 @@ public class Avion {
 		this.cupo = cupo;
 	}
 	
+        /**
+	 * Crea una instancia sin cupo
+	 * @param nombre
+	 * 		El nombre del avion
+	 */
+	public Avion(String nombre) {
+		this.nombre = nombre;
+	}
+        
 	/**
 	 * 
 	 * @return
