@@ -23,10 +23,8 @@ public class Avion {
 	private int cupo;
 	
 	
-	/**
-	 * Todos los asientos del avion
-	 */
-	public List<Asiento> asientos = new ArrayList<Asiento>();
+	
+	public List<Asiento> asientos = new ArrayList<Asiento>();//todos los asientos del avion
 	
 	/**
 	 * Da vida a la instancia del avion
