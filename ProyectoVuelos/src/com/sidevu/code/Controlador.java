@@ -4,7 +4,11 @@
  * and open the template in the editor.
  */
 package com.sidevu.code;
-
+import com.sidevu.code.modelo.Avion;
+import com.sidevu.code.modelo.Vuelo;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 /**a
  *
  * @author DELL
@@ -13,4 +17,32 @@ public class Controlador {
     public static void main(String args[]) {
         
     }
+    public static List<Avion> aviones = new ArrayList<Avion>();// Una lista global con todos los aviones registrados
+	public static List<Vuelo> vuelos = new ArrayList<Vuelo>();// Una lista global con todos los vuelos registrados
+    	/**
+	 * Revisa que un avion no "sobreponga su uso" en dos intervalos de fechas
+	 * 
+	 * @param nombre
+	 * 		El nombre del avion
+	 * @param start
+	 * 		La fecha de inicio que se pretende utilizar
+	 * @param end
+	 * 		La fecha final en la que se pretende dejar de utilizar el avion
+	 * @return
+	 * 		Si el avion no esta en uso
+	 */
+	public static boolean avionDisponible(String nombre, Date start, Date end) {
+
+		for (Vuelo v : vuelos) {
+			if (v.obtenerAvion().obtenerNombre().equalsIgnoreCase(nombre)) {
+			
+					if( (start.before(Utilidades.fecha(v.obtenerHoraDeLlegada())) || start.compareTo(Utilidades.fecha(v.obtenerHoraDeLlegada()))==0 ) 
+							&& (Utilidades.fecha(v.obtenerHoraDeSalida()).before(end) || Utilidades.fecha(v.obtenerHoraDeSalida()).compareTo(end)==0 ))  {
+						return false;
+					}
+			}
+
+		}
+		return true;
+	}
 }
