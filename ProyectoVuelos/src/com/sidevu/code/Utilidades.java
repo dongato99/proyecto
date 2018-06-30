@@ -6,6 +6,7 @@
 package com.sidevu.code;
 
 import com.sidevu.code.modelo.*;
+import java.util.Date;
 /**
  *
  * @author DELL
@@ -58,4 +59,14 @@ public class Utilidades {
 
 		return lista;
 	}
+    
+    public static Date fecha (String texto){
+    
+    return null;
+    }
+    
+    public static String obtenerHoras (Date inicio,Date fin){
+    
+    return "";
+    } 
 }
