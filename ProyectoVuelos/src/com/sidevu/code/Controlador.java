@@ -4,11 +4,18 @@
  * and open the template in the editor. ed
  */
 package com.sidevu.code;
+
+
+import java.util.Date;
+
+
+
 import com.sidevu.code.modelo.Avion;
 import com.sidevu.code.modelo.Vuelo;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+
 /**a
  *
  * @author DELL
@@ -18,6 +25,7 @@ public class Controlador {
         
     }
     
+
     	/**
 	 * Obtiene una instancia de vuelo comparando numeros de vuelo
 	 * 
@@ -62,4 +70,27 @@ public class Controlador {
 		}
 		return true;
 	}
+
+    public static Avion obtenerAvion(String text) 
+    {
+		for (Avion v : aviones) {
+			if (text.equalsIgnoreCase(v.obtenerNombre()))
+				return v;
+		}
+		return null;
+    }
+    
+    public static void crearAvion(String nombre, int cupo) 
+    {
+		Avion avion = new Avion(nombre, cupo);
+		eliminarAvion(nombre);
+		aviones.add(avion);
+		avion.escribirAJSON();
+    }
+    
+
+    private static void eliminarAvion(String nombre) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
