@@ -10,18 +10,15 @@ import java.util.Date;
 
 
 
-import com.sidevu.code.modelo.Avion;
-import com.sidevu.code.modelo.Vuelo;
-import java.util.ArrayList;
-import java.util.List;
-
-
-import java.util.ArrayList;
-
-import java.util.List;
-import com.sidevu.code.modelo.*;
 import javax.swing.JTextField;
 import com.sidevu.code.Utilidades;
+
+import com.sidevu.code.modelo.Avion;
+import com.sidevu.code.modelo.Vuelo;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * a
@@ -30,9 +27,79 @@ import com.sidevu.code.Utilidades;
  */
 public class Controlador {
 
+
+   
+
+    public static void cargarVuelos() {
+        int num;
+        File carpeta = new File("./sidevu/");
+        File[] listaDeArchivos = carpeta.listFiles();
+        if (listaDeArchivos != null) {
+            for (File child : listaDeArchivos) {
+                if (Utilidades.esEntero(child.getName().replaceAll(".txt", ""))) {
+                    num = Integer.parseInt(child.getName().replaceAll(".txt", ""));
+                    Vuelo v = new Vuelo(num);
+                    v = v.leerJSON();
+                    vuelos.add(v);
+                }
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "No existen vuelos para cargar");
+        }
+    }
+
+    public static void eliminarAvion(String nombre) {
+        Avion v;
+        v = Controlador.obtenerAvion(nombre);
+        if (v == null) {
+            return;
+        }
+        File file = new File("./sidevu/aviones/" + nombre + ".txt");
+        aviones.remove(v);
+        if (file.delete()) {
+            javax.swing.JOptionPane.showMessageDialog(null, "avion eliminado " + nombre + "");
+        }
+        return;
+    }
+  
+
+    public static void eliminarVuelo(int numeroDeVuelo) {
+        
+        Vuelo v = Controlador.obtenerVuelo(numeroDeVuelo);
+        if (v == null) {
+            return;
+        }
+        File file = new File("./sidevu/" + numeroDeVuelo + ".txt");
+        vuelos.remove(v);
+        if (file.delete()) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Vuelo eliminado " + numeroDeVuelo + "");
+        }
+        return;
+
+    }
+
+    public static void cargarAviones() {
+        String num;
+        File carpeta = new File("./sidevu/aviones");
+        File[] listaDeArchivos = carpeta.listFiles();
+        if (listaDeArchivos != null) {
+            for (File child : listaDeArchivos) {
+                num = child.getName().replaceAll(".txt", "");
+                Avion avion = new Avion(num);
+                avion = avion.leerJSON();
+                aviones.add(avion);
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "No existen vuelos para cargar");
+        }
+    }
+
+   
     public static void main(String args[]) {
 
     }
+
+    
     public static List<Avion> aviones = new ArrayList<Avion>();// Una lista global con todos los aviones registrados
     public static List<Vuelo> vuelos = new ArrayList<Vuelo>();// Una lista global con todos los vuelos registrados
 
@@ -77,9 +144,7 @@ public class Controlador {
         vuelo.escribirAJSON();
     }
 
-    private static void eliminarVuelo(int numeroDeVuelo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
     
 
     	/**
@@ -141,10 +206,6 @@ public class Controlador {
 		aviones.add(avion);
 		avion.escribirAJSON();
     }
-    
-
-    private static void eliminarAvion(String nombre) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+      
 
 }
