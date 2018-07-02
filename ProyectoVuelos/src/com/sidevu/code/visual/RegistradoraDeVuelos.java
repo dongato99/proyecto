@@ -6,21 +6,23 @@
 package com.sidevu.code.visual;
 
 import com.sidevu.code.Controlador;
+import com.sidevu.code.Utilidades;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author DELL
+ * @author equipo joven Sirve para registrar o modificar vuelos dependiendo de
+ * la instancia que se cree.
  */
 public class RegistradoraDeVuelos extends JFrame {
 
@@ -41,8 +43,59 @@ public class RegistradoraDeVuelos extends JFrame {
     private JLabel lblNombreAvion;//label que indicara que poner en una textfield
     private JButton btnCrearVuelo;//el boton para crear/modificar el vuelo
 
-    public RegistradoraDeVuelos() {
+    /**
+     * funcion que llena el arreglo de nombres de aviones Con la lista de
+     * aviones que vive en el controlador
+     */
+    private void iniciarAviones() {
+        aviones = new String[Controlador.aviones.size()];
+        for (int i = 0; i < Controlador.aviones.size(); i++) {
+            aviones[i] = Controlador.aviones.get(i).obtenerNombre();
+        }
+    }
 
+    /**
+     * Dialogo para confirmar si la informacion es correcta
+     *
+     * @return 0 si se escogio la opcion SI
+     */
+    public int dialogoConfirmacion() {
+        return JOptionPane.showConfirmDialog(null, "Es correcta la informacion?", "Una ultima advertencia...",
+                JOptionPane.YES_NO_OPTION);
+    }
+
+    /**
+     * valia las entradas del usuario (El numero ed vuelo y revisa el eformato
+     * de la fecha)
+     *
+     * @return verdadero si todas las entradas son correctas
+     */
+    public boolean validarEntradas() {
+        if (!Utilidades.formatoValido(horaDeLLegada.getText()) || !Utilidades.formatoValido(horaDeSalida.getText())) {
+            JOptionPane.showMessageDialog(null, "El formato es: dd-MM-yyyy HH:mm");
+            return false;
+        }
+        if (!Utilidades.esEntero(numeroDeVuelo.getText())) {
+            JOptionPane.showMessageDialog(null, "Inserta un NUMERO de vuelo");
+            return false;
+        }
+        if (!Controlador.avionDisponible(comboBox.getSelectedItem().toString(), Utilidades.fecha(horaDeSalida.getText()),
+                Utilidades.fecha(horaDeLLegada.getText()))) {
+            JOptionPane.showMessageDialog(null, "El avion no esta disponible");
+            return false;
+        }
+        if (dialogoConfirmacion() != 0) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Crea la interfaz para dar de alta un nuevo vuelo Inicia todas los
+     * componentes y los inserta en el Panel de contenido
+     */
+    public RegistradoraDeVuelos() {
+        iniciarAviones();
         setTitle("Alta Vuelos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 427, 183);
@@ -109,6 +162,16 @@ public class RegistradoraDeVuelos extends JFrame {
         btnCrearVuelo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
 
+                if (!validarEntradas()) {
+                    return;
+                }
+
+                Controlador.crearVuelo(
+                        Controlador.crearInstanciaAvion(comboBox.getSelectedItem().toString(),
+                                Controlador.obtenerAvion(comboBox.getSelectedItem().toString()).obtenerCupo()),
+                        Integer.parseInt(numeroDeVuelo.getText()), origen.getText(), destino.getText(),
+                        horaDeSalida.getText(), horaDeLLegada.getText(),
+                        Utilidades.obtenerHoras(Utilidades.fecha(horaDeSalida.getText()), Utilidades.fecha(horaDeLLegada.getText())));
                 dispose();
 
             }
@@ -119,9 +182,23 @@ public class RegistradoraDeVuelos extends JFrame {
 
     }
 
+    /**
+     * Cuando se crea la instancia con este constructor se crea para modificar
+     * un vuelo existente Todos los parametros podran ser modificados y el vuelo
+     * sera actualizado con estos parametros siguientes
+     *
+     * @param numero
+     * @param origenVuelo
+     * @param destinoVuelo
+     * @param salida
+     * @param llegada
+     * @param duracionVuelo
+     * @param nombreAvion
+     * @param cupoAvion
+     */
     public RegistradoraDeVuelos(int numero, String origenVuelo, String destinoVuelo, String salida, String llegada,
             String duracionVuelo, String nombreAvion, int cupoAvion) {
-
+        iniciarAviones();
         setTitle("Modificar Vuelos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 427, 183);
@@ -193,6 +270,12 @@ public class RegistradoraDeVuelos extends JFrame {
         btnCrearVuelo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
 
+                if (!validarEntradas()) {
+                    return;
+                }
+
+                Controlador.modificarVuelo(destino, horaDeLLegada, horaDeSalida, origen,
+                        Controlador.obtenerAvion(comboBox.getSelectedItem().toString()), numeroDeVuelo);
                 dispose();
             }
 

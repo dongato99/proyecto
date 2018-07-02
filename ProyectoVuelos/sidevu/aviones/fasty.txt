@@ -1,0 +1,1 @@
+{"lista":["nombre:fasty","cupo:20"]}

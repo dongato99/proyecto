@@ -4,11 +4,11 @@
  * and open the template in the editor.ini
  */
 package com.sidevu.code.visual;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.Document;
-
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -18,95 +18,112 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+
 /**
  *
- * @author DELL
+ * @author equipo "Los chicos"
+ *
+ * Esta clase lista sirve para desplegar las listas que se pudieran necesitar
+ * como puede ser la lista de pasajeros o de vuelo
+ *
  */
 public class Lista extends JFrame {
+
     protected JPanel contentPane;
-    private JTextField textoABuscar;
-    private int pos = 0;
+    private JTextField textoABuscar;// contiene la cadena del texto a buscar
+    private int pos = 0;// la posicion para el funcionamiento de buscar
+
+    /**
+     * Se llama al crear la instancia de la lista..
+     *
+     * @param listaOrdenada la cadena conteniendo la lista a desplegar
+     * @param titulo El titulo de la lista
+     */
     public void configuracionDeLista(String listaOrdenada, String titulo) {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 334);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(142, 103, 4, 22);
-		JScrollPane scrollPane = new JScrollPane(textArea);
-		scrollPane.setBounds(66, 32, 300, 218);
-		contentPane.add(scrollPane);
-		JLabel vueloHeader = new JLabel(titulo);
-		vueloHeader.setBounds(133, 11, 136, 14);
-		contentPane.add(vueloHeader);
-		textArea.setText(listaOrdenada);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 450, 334);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+        JTextArea textArea = new JTextArea();
+        textArea.setBounds(142, 103, 4, 22);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBounds(66, 32, 300, 218);
+        contentPane.add(scrollPane);
+        JLabel vueloHeader = new JLabel(titulo);
+        vueloHeader.setBounds(133, 11, 136, 14);
+        contentPane.add(vueloHeader);
+        textArea.setText(listaOrdenada);
 
-		textArea.setSelectionStart(0);
-		textArea.setSelectionEnd(0);
+        textArea.setSelectionStart(0);
+        textArea.setSelectionEnd(0);
 
-		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
+        JButton btnBuscar = new JButton("Buscar");
+        btnBuscar.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-				String find = textoABuscar.getText().toLowerCase();
+                String find = textoABuscar.getText().toLowerCase();
 
-				textArea.requestFocusInWindow();
+                textArea.requestFocusInWindow();
 
-				if (find != null && find.length() > 0) {
-					Document document = textArea.getDocument();
-					int findLength = find.length();
-					try {
-						boolean found = false;
+                if (find != null && find.length() > 0) {
+                    Document document = textArea.getDocument();
+                    int findLength = find.length();
+                    try {
+                        boolean found = false;
 
-						if (pos + findLength > document.getLength()) {
-							pos = 0;
-						}
+                        if (pos + findLength > document.getLength()) {
+                            pos = 0;
+                        }
 
-						while (pos + findLength <= document.getLength()) {
+                        while (pos + findLength <= document.getLength()) {
 
-							String match = document.getText(pos, findLength).toLowerCase();
+                            String match = document.getText(pos, findLength).toLowerCase();
 
-							if (match.equals(find)) {
-								found = true;
-								break;
-							}
-							pos++;
-						}
+                            if (match.equals(find)) {
+                                found = true;
+                                break;
+                            }
+                            pos++;
+                        }
 
-						if (found) {
+                        if (found) {
 
-							Rectangle viewRect = textArea.modelToView(pos);
+                            Rectangle viewRect = textArea.modelToView(pos);
 
-							textArea.scrollRectToVisible(viewRect);
+                            textArea.scrollRectToVisible(viewRect);
 
-							textArea.setCaretPosition(pos + findLength);
-							textArea.moveCaretPosition(pos);
+                            textArea.setCaretPosition(pos + findLength);
+                            textArea.moveCaretPosition(pos);
 
-							pos += findLength;
-						}
+                            pos += findLength;
+                        }
 
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
 
-				}
+                }
 
-			}
-		});
-		btnBuscar.setBounds(66, 261, 89, 23);
-		contentPane.add(btnBuscar);
+            }
+        });
+        btnBuscar.setBounds(66, 261, 89, 23);
+        contentPane.add(btnBuscar);
 
-		textoABuscar = new JTextField();
-		textoABuscar.setBounds(219, 262, 147, 20);
-		contentPane.add(textoABuscar);
-		textoABuscar.setColumns(10);
-	}
+        textoABuscar = new JTextField();
+        textoABuscar.setBounds(219, 262, 147, 20);
+        contentPane.add(textoABuscar);
+        textoABuscar.setColumns(10);
+    }
 
-	public Lista(String lista, String titulo) {
-		configuracionDeLista(lista, titulo);
-	}
+    /**
+     * Crea la instancia de la lista con la configuracion correspondiente (Es
+     * decir, si es de vuelos o pasajeros)
+     */
+    public Lista(String lista, String titulo) {
+        configuracionDeLista(lista, titulo);
+    }
 }
