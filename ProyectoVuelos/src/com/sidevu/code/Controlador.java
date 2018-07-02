@@ -17,6 +17,23 @@ public class Controlador {
     public static void main(String args[]) {
         
     }
+    
+    	/**
+	 * Obtiene una instancia de vuelo comparando numeros de vuelo
+	 * 
+	 * @param num
+	 *            El numero de vuelo
+	 * @return La instancia del vuelo correspondiente alnumero de vuelo
+	 */
+	public static Vuelo obtenerVuelo(int num) {
+		for (Vuelo v : vuelos) {
+			if (num == v.obtenerNumeroDeVuelo())
+				return v;
+		}
+		return null;
+	}
+
+    
     public static List<Avion> aviones = new ArrayList<Avion>();// Una lista global con todos los aviones registrados
 	public static List<Vuelo> vuelos = new ArrayList<Vuelo>();// Una lista global con todos los vuelos registrados
     	/**
