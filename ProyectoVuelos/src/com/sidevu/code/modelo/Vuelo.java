@@ -7,8 +7,13 @@ package com.sidevu.code.modelo;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-
+import java.io.FileWriter;
+import java.io.IOException;
 /**
  * 
  * @author Equipo "joven" primera edicion por Arturo Aguilar
@@ -116,6 +121,7 @@ public class Vuelo {
 	public Avion obtenerAvion() {
 		return avion;
 	}
+
         
         public Boleto crearBoleto(String nombre, int asiento) {
 		if(avion.obtenerCupo()==vendidos())
@@ -133,5 +139,40 @@ public class Vuelo {
 			return crearBoleto(nombre, asiento);
 		}
 		return b;
+        }
+        public void ordenarPasajeros() {
+		Collections.sort(boletos, Comparator.comparing(Boleto::obtenerNombre));
+	}
+        
+        public void escribirAJSON() {
+		JSONObject obj = new JSONObject();
+		JSONArray strings = new JSONArray();
+		strings.add("Numero:"+ numeroDeVuelo);
+		strings.add("Origen:"+ origen);
+		strings.add("Destino:"+ destino);
+		strings.add("Salida:"+ horaDeSalida);
+		strings.add("LLegada:"+ horaDeLLegada);
+		strings.add("Duracion:"+ duracion);
+		strings.add("Vendidos:"+ vendidos());
+		strings.add("AvionNombre:"+ avion.obtenerNombre());
+		strings.add("AvionCupo:"+ avion.obtenerCupo());
+	
+		
+		for(int i = 0; i < vendidos(); i++) {
+			strings.add("BoletoNombre:"+ boletos.get(i).obtenerNombre());
+			strings.add("BoletoAsiento:"+ boletos.get(i).obtenerAsiento().obtenerNumeroDeAsiento());
+		}
+		obj.put("lista", strings);
+		try (FileWriter file = new FileWriter("./sidevu/"+obtenerNumeroDeVuelo()+".txt")) {
+			file.write(obj.toJSONString());
+			System.out.println("Successfully Copied JSON Object to File...");
+			System.out.println("\nJSON Object: " + obj);
+			file.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+		}
+
 	}
 }
