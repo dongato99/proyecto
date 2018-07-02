@@ -37,6 +37,8 @@ public class PantallaPrincipal extends JFrame {
      * box y un boton.
      */
     public PantallaPrincipal() {
+        Controlador.cargarVuelos();
+        Controlador.cargarAviones();
         setTitle("Sistema de Vuelos");
         setBackground(SystemColor.desktop);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
