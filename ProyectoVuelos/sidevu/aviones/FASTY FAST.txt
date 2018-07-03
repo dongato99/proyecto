@@ -1,0 +1,1 @@
+{"lista":["nombre:FASTY FAST","cupo:20"]}
